@@ -14,6 +14,9 @@
         padding-top: 100px;
     }
     </style>
+    <script type='text/javascript'> 
+        
+    </script>
 <body>   
     <div style="padding-left: 500px">
         <a href="add"><button type="button" class="btn btn-info" >Add Items</button></a>
@@ -39,12 +42,15 @@
       
     <script type="text/javascript">
         let url="https://mkmj.herokuapp.com/name";
-        fetch(url).then(response => response.json())
+        /*fetch(url).then(response => response.json())
         .then( (result) => {
             table(result);
             
         })
-        .catch(error => console.log('error:', error));
+        .catch(error => console.log('error:', error));*/
+        var rows = <%-JSON.stringify(data)%>; 
+        console.log(rows);
+        table(rows);
         function table(mainObj)
         {
             var k = '<tbody>'
@@ -60,7 +66,7 @@
             k+='</tbody>';
             document.getElementById('tableData').innerHTML = k;
         }
-        function myFunction() {
+        function myFunction(){
               var input, filter, table, tr, td, i, txtValue;
               input = document.getElementById("myInput");
               filter = input.value.toUpperCase();
