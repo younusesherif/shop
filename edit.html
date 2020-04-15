@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,19 +18,58 @@
         background-color:aliceblue;
     }
     </style>
+    <script>
+        function per(event)
+        {
+            let url="http://localhost:3000/doc";
+            var input = document.getElementById("myTest");
+            var inputVal = "";
+            if (input) {
+                inputVal = input.value;
+                 console.log(inputVal);
+                fetch(url).then(response => response.json())
+                .then( (result) => {
+                    var x="";
+                    for(var i=0;i<result.length;i++)
+                        {
+                           if(result[i].pcode == inputVal)
+                               {
+                                   console.log(result[i].product);
+                                   let h1=document.getElementById('test');
+                                    h1.innerHTML=`${result[i].product}`;
+                               }
+                        }
+                    })
+                .catch(error => console.log('error:', error))
+                }
+        }
+    </script>
 <body>
     <div align="center">
     <a href="/"><button class="btn btn-success">Home</button></a>
     </div>
-    <h1 align="middle">Add Item</h1>
+    <h1 align="middle">Edit Item</h1>
 <div class="container">
-    <form action="/add" method="POST">
+    <form action="/edit" method="POST">
       <div class="form-group">
-        <label for="exampleInputEmail1">product</label>
-        <input class="form-control" placeholder="product" name="name" type="text">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        <label for="exampleInputEmail1">product.NO</label>
           <br>
-          <label for="exampleInputEmail1">Act.price</label>
+<div class="col">
+    <div class="input-group">    
+    <input class="form-control" placeholder="number"type="text" id="myTest" name=pcode>
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="button" onclick="per()" id="submit">Search</button>
+      </span>
+    </div><!-- /input-group -->
+  </div>
+          <br>
+          <div style="margin-left: 250px">
+            <h1 id="test"></h1>
+          </div>
+          <!--<label for="exampleInputEmail1">product</label>
+        <input class="form-control" placeholder="product" name="product" type="text">
+          <br>-->
+        <label for="exampleInputEmail1">Act.price</label>
         <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Act.price" name="act">
           <br>
           <label for="exampleInputEmail1">MRP</label>

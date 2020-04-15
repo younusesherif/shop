@@ -29,6 +29,19 @@ async function main(){
 
 main().catch(console.error); 
 
+var pc = 1001;
+app.get('/doc',async(req,res)=>{
+    await client.db("new").collection("shop").find({},{_id:0}).toArray(function(err, result) {
+        if (err)
+        {
+              console.log("invalid string");
+        }
+        else
+        {
+            res.json(result);
+        }
+    });
+})
 app.get('/',async(req,res)=>{
     await client.db("new").collection("shop").find({},{_id:0}).toArray(function(err, result) {
         if (err)
@@ -45,7 +58,6 @@ app.get('/',async(req,res)=>{
 app.get('/add',(req,res)=>{
     res.sendFile(__dirname + '/add.html');
 })
-
 app.post('/add',async(req,res)=>{
     const link = req.body.name;
     const act = req.body.act;
@@ -53,14 +65,27 @@ app.post('/add',async(req,res)=>{
     if(link!="" && act!="" && mrp!="")
         {
             console.log(link,act,mrp);
-            await client.db("new").collection("shop").insertOne({product:link,act:act,MRP:mrp});  
+            await client.db("new").collection("shop").insertOne({pcode:pc,product:link,act:act,MRP:mrp});
+            pc=pc+1;
             await console.log("data inserted");
-            res.sendFile(__dirname+'/alert.html');
+            res.render(__dirname +'/alert.html', {data: "data added"});
         }
     else
         {
             res.send('<p>ENTER CORRECT DETAILS</p><br><a href="add.html"><button>back</button></a>');
         }
+})
+app.get('/edit',async(req,res)=>{
+    res.sendFile(__dirname+'/edit.html');
+})
+app.post('/edit',async(req,res)=>{
+    const id = parseInt(req.body.pcode);
+    //const link = req.body.product;
+    const act = req.body.act;
+    const mrp = req.body.mrp;
+    await client.db("new").collection("shop").update({"pcode" : id},{$set: {act:act,MRP:mrp}});
+    await console.log("data changed");
+    res.render(__dirname +'/alert.html', {data: "data Updated"});
 })
 client.close();
 app.listen(process.env.PORT||3000, () => console.log(`server listening on port 3000!`))
