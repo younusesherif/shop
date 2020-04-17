@@ -62,6 +62,7 @@ app.post('/add',async(req,res)=>{
     const link = req.body.name;
     const act = req.body.act;
     const mrp = req.body.mrp;
+    console.log(req.body);
     if(link!="" && act!="" && mrp!="")
         {
             console.log(link,act,mrp);
